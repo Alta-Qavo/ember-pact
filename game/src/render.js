@@ -2,7 +2,7 @@
 // Every card is a real DOM element with a readable power, element and cost text,
 // so the game stays legible at thumbnail size in a screenshot.
 
-import { ELEMENTS, describeCard } from './cards.js';
+import { ELEMENTS, describeCard, elementAdvantage } from './cards.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -41,9 +41,9 @@ export function renderAll(state, ui) {
   $('youScore').textContent = `Rounds won: ${state.you.wins}`;
   $('foeScore').textContent = `Rounds won: ${state.foe.wins}`;
   $('youStatus').textContent = state.you.ward ? '🛡️ Ward up — next damage blocked'
-    : state.you.chainCount >= 2 ? `⛓ Chain x${state.you.chainCount} ${ELEMENTS[state.you.chainElement].name} — +2 next round` : '';
+    : state.you.chainCount >= 2 ? `Chain x${state.you.chainCount} ${ELEMENTS[state.you.chainElement].name} — +2 next round` : '';
   $('foeStatus').textContent = state.foe.ward ? '🛡️ Ward up — next damage blocked'
-    : state.foe.chainCount >= 2 ? `⛓ Chain x${state.foe.chainCount} ${ELEMENTS[state.foe.chainElement].name} — +2 next round` : '';
+    : state.foe.chainCount >= 2 ? `Chain x${state.foe.chainCount} ${ELEMENTS[state.foe.chainElement].name} — +2 next round` : '';
   $('foeTell').textContent = ui.tell || '';
 
   const youHand = $('youHand');
@@ -76,7 +76,13 @@ export function showPlayed(state, report, ui) {
   youSlot.appendChild(cardElement(report.youCard, { played: true }));
   const winnerEl = report.winner === 'you' ? youSlot.firstChild : report.winner === 'foe' ? foeSlot.firstChild : null;
   if (winnerEl) winnerEl.classList.add('winner-glow');
-  $('clashDetail').textContent = `${report.youPower} vs ${report.foePower} — ${report.winner === 'you' ? 'You take the round!' : report.winner === 'foe' ? 'Mira takes the round!' : 'Dead heat!'}`;
+  const edge = elementAdvantage(report.youCard, report.foeCard);
+  const edgeText = edge > 0 ? ` — ${ELEMENTS[report.youCard.element].name} beats ${ELEMENTS[report.foeCard.element].name} (+3)!`
+    : edge < 0 ? ` — ${ELEMENTS[report.foeCard.element].name} beats ${ELEMENTS[report.youCard.element].name} (+3)!` : '';
+  $('clashDetail').textContent = `${report.youPower} vs ${report.foePower}${edgeText} ${report.winner === 'you' ? 'You take the round!' : report.winner === 'foe' ? 'Mira takes the round!' : 'Dead heat!'}`;
+  const chainSide = state.you.chainCount >= 2 ? 'you' : state.foe.chainCount >= 2 ? 'foe' : null;
+  $('chainLabel').textContent = chainSide === 'you' ? `Chain x${state.you.chainCount} ${ELEMENTS[state.you.chainElement].name} — +2 next round`
+    : chainSide === 'foe' ? `Mira's Chain x${state.foe.chainCount} ${ELEMENTS[state.foe.chainElement].name} — +2 next round` : '';
   ui.logLine = report.lines ? report.lines[0] : '';
   renderAll(state, ui);
 }

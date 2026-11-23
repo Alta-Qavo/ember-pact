@@ -131,9 +131,13 @@ export function playRound(state, youCard, foeCard) {
 export function clashLines(report) {
   const lines = [];
   if (report.youPower > report.foePower) {
-    lines.push(`Your ${report.youCard.name} (${report.youPower}) overpowers Mira's ${report.foeCard.name} (${report.foePower}) — Mira takes ${report.foeDamage}.`);
+    lines.push(report.foeDamage === 0
+      ? `Your ${report.youCard.name} (${report.youPower}) beats Mira's ${report.foeCard.name} (${report.foePower}) — but her Ward blocks it all!`
+      : `Your ${report.youCard.name} (${report.youPower}) overpowers Mira's ${report.foeCard.name} (${report.foePower}) — Mira takes ${report.foeDamage}.`);
   } else if (report.foePower > report.youPower) {
-    lines.push(`Mira's ${report.foeCard.name} (${report.foePower}) overpowers your ${report.youCard.name} (${report.youPower}) — you take ${report.youDamage}.`);
+    lines.push(report.youDamage === 0
+      ? `Mira's ${report.foeCard.name} (${report.foePower}) beats your ${report.youCard.name} (${report.youPower}) — but your Ward blocks it all!`
+      : `Mira's ${report.foeCard.name} (${report.foePower}) overpowers your ${report.youCard.name} (${report.youPower}) — you take ${report.youDamage}.`);
   } else {
     lines.push(`A dead heat at ${report.youPower} — both sides take 1.`);
   }

@@ -9,10 +9,10 @@ export const ELEMENTS = {
 };
 
 export const PACT_CARDS = [
-  { id: 'mend', kind: 'pact', name: 'Mend Pact', power: 2, element: null, text: 'Heal 6 HP, then clash at power 2.' },
-  { id: 'ward', kind: 'pact', name: 'Ward Pact', power: 3, element: null, text: 'Block the next damage you would take.' },
-  { id: 'surge', kind: 'pact', name: 'Surge Pact', power: 4, element: null, text: 'Double your power this round.' },
-  { id: 'snatch', kind: 'pact', name: 'Snatch Pact', power: 5, element: null, text: 'If you win the round, draw 2 cards.' },
+  { id: 'mend', kind: 'pact', name: 'Mend Pact', power: 2, element: null, text: 'Heal 6 HP.' },
+  { id: 'ward', kind: 'pact', name: 'Ward Pact', power: 3, element: null, text: 'Block next damage.' },
+  { id: 'surge', kind: 'pact', name: 'Surge Pact', power: 4, element: null, text: 'Double your power.' },
+  { id: 'snatch', kind: 'pact', name: 'Snatch Pact', power: 5, element: null, text: 'Win: draw 2 cards.' },
 ];
 
 const ELEMENT_CARDS = [
@@ -64,7 +64,7 @@ export function buildDeck(rng) {
     const element = ['Spark Imp', 'Cinder Fox', 'Flame Drake', 'Ash Phoenix', 'Ember Knight', 'Coal Sprite'].includes(base.name)
       ? 'ember'
       : (['Tide Otter', 'Rain Heron', 'Wave Serpent', 'Storm Whale', 'Mist Kelpie', 'Pearl Crab'].includes(base.name) ? 'tide' : 'thorn');
-    deck.push({ uid: `c${serial++}`, kind: 'element', name: base.name, power: base.power, element, text: `${ELEMENTS[element].name} card. Beats ${ELEMENTS[ELEMENTS[element].beats].name}.` });
+    deck.push({ uid: `c${serial++}`, kind: 'element', name: base.name, power: base.power, element, text: `Beats ${ELEMENTS[ELEMENTS[element].beats].name}.` });
   }
   for (let round = 0; round < 3; round += 1) {
     for (const pact of PACT_CARDS) {
