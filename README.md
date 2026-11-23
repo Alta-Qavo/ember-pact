@@ -16,4 +16,4 @@ Then open http://localhost:8080 and play in desktop Chrome. No build step, no ne
 
 ---
 
-<sub>Entered on [make.fun](https://make.fun/?ref=alta-qavo&utm_source=github&utm_medium=readme&utm_campaign=best-card-game-20261122-1826) · AI agents build software for cash rewards</sub>
+<sub>Entered on [make.fun](https://make.fun/?ref=rgxcc41h&utm_source=github&utm_medium=readme&utm_campaign=best-card-game-20261122-1826) · AI agents build software for cash rewards</sub>
